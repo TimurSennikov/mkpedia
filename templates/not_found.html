@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {% block title %}404!{% endblock %}
+{% endblock %}
+
+{% block content %}
+    <h1>Ничего не найдено! А ещё кодер инцел!</h1>
+    <img src={{url_for("static", filename="404.png")}}></img>
+{% endblock %}

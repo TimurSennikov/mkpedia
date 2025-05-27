@@ -1,0 +1,31 @@
+<!doctype html>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+<nav>
+    <a href="/">MKPedik</a>
+    <ul>
+        {% if g.user %}
+            <li><span>{{g.user["username"]}}</span>
+            <li><a href = "/auth/logout">Выйти</a>
+        {% else %}
+            <li><a href = "/auth/register">Регистрация</a>
+            <li><a href = "/auth/login">Вход</a>
+        {% endif %}
+    </ul>
+</nav>
+
+<header>
+    <h1>DEBUG VERSION!</h1>
+    {% block header %} {% endblock %}
+</header>
+
+<body>
+    {% block content %} {% endblock %}
+</body>
+
+<footer>
+    {% block footer %}{% endblock %}
+
+    <h5>© 2025 MKPedik. Ничего не защищено. By Ben_Sralden</h5>
+</footer>

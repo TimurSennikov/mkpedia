@@ -1,0 +1,15 @@
+<!doctype html>
+<title>Конструктор статей</title>
+<link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+<body>
+    <form method="post" enctype=multipart/form-data>
+        <label for="title">Название статьи</label>
+        <input name="title" id="title">
+        <label for="comment">Комментарий</label>
+        <input name="comment" id="comment">
+        <label for="file">HTML-код статьи</label>
+        <input type="file" name="file" id="file"></textarea>
+        <button type="submit">Отправить</button>
+    </form>
+</body>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {% block title %}{{title}}{% endblock %}
+{% endblock %}
+
+{% block content %}
+    {{article|safe}} 
+{% endblock %}
+
+{% block footer %}
+    {% if wayback_id is not defined %} 
+        <p><a href="/articles/getbody?name={{title}}">Скачать статью (Ctrl + S по тому что откроется)</a></p>
+    {% else %}
+        <p><a href="/articles/waybackbody?name={{title}}&n={{wayback_id}}">Скачать статью (Ctrl + S по тому что откроется)</a></p>
+    {% endif %}
+
+    <p><a href="/users/getuser?username={{last_edit_by}}">Последний редактор: {{last_edit_by}}</a></p>
+    <p><a href="/articles/commits?article={{title}}">История изменений статьи</a></p>
+    {% if g.user["admin"] %}
+        <p><a href="/articles/delete?article={{title}}">Удалить статью (Осторожно! Действие необратимо!)</a></p>
+    {% endif %}
+{% endblock %}
