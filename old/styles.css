@@ -1,0 +1,145 @@
+/* Базовые стили */
+body {
+  background-color: #0d0d0d;
+  color: #e0e0e0;
+  font-family: "Segoe UI", sans-serif;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Центровка основного контента */
+main, .container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Заголовки */
+h1 {
+  color: #4da6ff;
+  font-size: 2.2em;
+  margin-bottom: 0.4em;
+}
+h2 {
+  color: #66ffcc;
+  font-size: 1.8em;
+  margin-top: 1.5em;
+}
+h3 {
+  color: #ffcc66;
+  font-size: 1.5em;
+  margin-top: 1.2em;
+}
+
+/* Списки без треугольников */
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+ul li {
+  margin: 0.5em 0;
+}
+
+/* Ссылки */
+a {
+  color: #80b3ff;
+  text-decoration: none;
+  transition: 0.2s;
+}
+a:hover {
+  color: #66aaff;
+  text-decoration: underline;
+}
+
+/* Формы */
+form {
+  margin-top: 2em;
+  background-color: #111;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(100, 100, 100, 0.2);
+  display: inline-block;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #cccccc;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #fff;
+  margin-bottom: 1em;
+  font-size: 1em;
+}
+
+input[type="submit"],
+button {
+  background-color: #4da6ff;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+}
+input[type="submit"]:hover,
+button:hover {
+  background-color: #3399ff;
+}
+
+/* Футер */
+footer {
+  margin-top: 3em;
+  font-size: 0.85em;
+  color: #777;
+}
+
+img {
+    max-width: 40%;
+    max-height: 40%;
+}
+
+#sidebar {
+  transition: all 0.3s ease;
+  display: block;
+}
+    
+#sidebar.collapsed {
+  display: none;
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+    
+#main-content.expanded {
+  flex: 0 0 calc(100% - 20px);
+  max-width: calc(100% - 20px);
+}
+
+#editor-container {
+    height: 143vh;
+    width: 100%;
+    position: relative;
+    margin-bottom: 2em;
+}
+
+#editor {
+    position: absolute;
+    width: 100%;
+    height: 70%;
+}

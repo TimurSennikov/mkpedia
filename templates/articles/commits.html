@@ -10,7 +10,8 @@
     <a href="/articles/getcommit?article={{article['title']}}&n={{loop.index-1}}">Коммит от {{i["last_edit_by"]}} в {{i["editdate"]}}: {{i["comment"]}}</a>
 
     {% if g.user["admin"] %}
-        <a href="/articles/waybackbody?name={{article['title']}}&n={{loop.index-1}}">Скачать HTML</a>
+        <a href="/articles/article?article={{article['title']}}&n={{loop.index-1}}&raw_body=1">Скачать HTML</a>
+        <a href="/articles/article?article={{article['title']}}&construct=1&n={{loop.index-1}}">Откатить до этой версии</a>
     {% endif %}
 
     </p>

@@ -5,6 +5,7 @@ from ..decorators import *
 from ..db import *
 
 @articles_bp.route("/commits")
+@user_only
 def get_commits():
     article = request.args.get("article")
 
