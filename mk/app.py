@@ -1,4 +1,6 @@
 import os
+import secrets
+import dotenv
 
 from flask import *
 
@@ -10,10 +12,16 @@ from .articles import *
 from .users import *
 from .uploader import *
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_mapping(SECRET_KEY="smegma", DATABASE=os.path.join(app.instance_path, "mkpedik.db"), ARTICLE_DIR="article_data")
-    app.config.from_pyfile("config.py", silent=True)
+dotenv.load_dotenv()
+
+def create_app(test_config=None):
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(SECRET_KEY=os.getenv("SECRET_KEY"), DATABASE=os.path.join(app.instance_path, "mkpedik.db"), ARTICLE_DIR=os.path.join(app.instance_path, "article_data"))
+
+    if test_config is None:
+        app.config.from_pyfile("config.py", silent=True)
+    else:
+        app.config.from_mapping(test_config)
 
     app.config["MAX_CONTENT_LENGTH"] = 50 * 1000 * 1000 # максимальный вес файла - 50 мегабайт.
 
