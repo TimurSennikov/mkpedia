@@ -2,13 +2,15 @@ if [[ ! -d venv ]]; then
     python -m venv venv
     source venv/bin/activate
     pip install flask
-    pip install gunicorn
+    pip install 'uvicorn[standard]'
 else
     source venv/bin/activate
 fi
 
-if [[ ! -d ../instance ]]; then
+if [[ ! -d instance ]]; then
+    cd mk
     flask --app app init_db
+    cd ..
 fi
 
-flask --app app run -p 5000
+python main.py

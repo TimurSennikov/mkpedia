@@ -34,3 +34,5 @@ def create_app():
         return render_template("home.html", article_count=len(get_db().execute("SELECT * FROM articles").fetchall()))
 
     return app
+
+app = create_app()
