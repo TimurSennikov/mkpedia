@@ -16,7 +16,9 @@ def set_admin(v: bool):
     user = db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
 
     if not user:
-        return "Пользователь не найден!"
+        return render_template("error.html", error="Пользователь не найден!")
+    elif user["username"] == "root":
+        return render_template("error.html", error="Пошёл нахуй уёбище, ты куда лезешь падла блять очкастая нахуй")
 
     db.execute("UPDATE users SET admin = ? WHERE username = ?", (v, username))
     db.commit()
@@ -60,6 +62,8 @@ def delete():
 
     if not username:
         return render_template("not_found.html")
+    elif username == "root":
+        return render_template("error.html", error="IDI NAXUI")
 
     db = get_db()
 
