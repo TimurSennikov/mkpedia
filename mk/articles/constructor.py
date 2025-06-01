@@ -98,6 +98,8 @@ def constructor_new():
             p = [{"fpath": fpath, "body": fullpath, "last_edit_by": g.user["username"], "editdate": datetime.datetime.now().strftime("%I:%M%p в %B %d %Y"), "comment": comment}]
 
             db.execute("INSERT INTO articles VALUES(?, ?, ?)", (title, json.dumps(p), g.user["username"]))
+            db.execute("UPDATE users SET commit_n = commit_n+1 WHERE username = ?", (g.user["username"],))
+
             db.commit()
         else:
             if not comment:
@@ -110,6 +112,8 @@ def constructor_new():
             with open(body, "w") as f:
                 f.write(data)
             db.execute("UPDATE articles SET data = ? WHERE title = ?", (json.dumps(artdata), title))
+            db.execute("UPDATE users SET commit_n = commit_n+1 WHERE username = ?", (g.user["username"],))
+
             db.commit()
 
         return redirect("/")
