@@ -11,6 +11,7 @@ from .admin_panel import *
 from .articles import *
 from .users import *
 from .uploader import *
+from .random import *
 
 dotenv.load_dotenv()
 
@@ -36,6 +37,7 @@ def create_app(test_config=None):
     app.register_blueprint(articles_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(uploader_bp)
+    app.register_blueprint(random_bp)
 
     @app.route("/")
     def home():

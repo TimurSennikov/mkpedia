@@ -23,7 +23,7 @@ def get_article():
     db = get_db()
 
     if artname is None:
-        return render_template("error.html", error="Статья не найдена!")
+        return render_template("not_found.html")
 
     art = db.execute("SELECT * FROM articles WHERE title = ?", (artname,)).fetchone()
     if not art:

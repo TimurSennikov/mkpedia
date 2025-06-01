@@ -7,6 +7,9 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        if request.cookies.get("has_an_account") is not None and request.cookies.get("has_an_account") == "1":
+            return render_template("error.html", error="Доступно только пользователям без аккаунта.")
+
         username = request.form["username"]
         password = request.form["password"]
 
@@ -22,7 +25,10 @@ def register():
             db.execute("INSERT INTO queue VALUES(?, ?)", (username, password))
             db.commit()
 
-            return redirect("/auth/login")
+            r = make_response(redirect("/auth/login"))
+            r.set_cookie("has_an_account", "1")
+
+            return r
         except db.IntegrityError:
             return "Имя пользователя уже есть в очереди! Попробуйте позже!"
     elif request.method == "GET":

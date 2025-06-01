@@ -27,3 +27,12 @@ def root_only(func):
 
     wrapper.__name__ = func.__name__
     return wrapper
+
+def unauthorized_only(func):
+    def wrapper(*args, **kwargs):
+        if g.user:
+            return render_template("error.html", error="Доступно только неавторизированным пользователям.")
+        return func(*args, **kwargs)
+
+    wrapper.__name__ = func.__name__
+    return wrapper

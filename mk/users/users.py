@@ -54,7 +54,7 @@ def demote():
     return set_admin(False)
 
 @user_bp.route("/delete")
-@admin_only
+@root_only
 def delete():
     username = request.args.get("username")
 

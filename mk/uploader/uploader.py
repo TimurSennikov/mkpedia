@@ -56,7 +56,7 @@ def upload_file():
             if not os.path.exists(p):
                 os.makedirs(p)
 
-            actual_filename = str(int(time.time())) + "_" + filename
+            actual_filename = str(int(time.time())) + "_" + g.user["username"] + "_" + filename
             p = os.path.join(p, actual_filename)
 
             slash_path = "/uploader/storage/" + actual_filename
