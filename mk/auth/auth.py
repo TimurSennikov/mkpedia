@@ -1,3 +1,4 @@
+import hashlib
 import functools
 from flask import *
 from ..db import *
@@ -16,13 +17,13 @@ def register():
         db = get_db()
 
         if not username or not password:
-            return "Username AND password are required!"
+            return render_template("error.html", error="Username AND password are required!")
 
         try:
             if db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone() is not None or db.execute("SELECT * FROM queue WHERE username = ?", (username,)).fetchone() is not None:
-                return "Имя пользователя уже занято!"
+                return render_template("error.html", error="Имя пользователя уже занято!")
 
-            db.execute("INSERT INTO queue VALUES(?, ?)", (username, password))
+            db.execute("INSERT INTO queue VALUES(?, ?)", (username, hashlib.sha256(password.encode("utf-8")).hexdigest()))
             db.commit()
 
             r = make_response(redirect("/auth/login"))
@@ -30,7 +31,7 @@ def register():
 
             return r
         except db.IntegrityError:
-            return "Имя пользователя уже есть в очереди! Попробуйте позже!"
+            return render_template("error.html", error="Имя пользователя уже есть в очереди! Попробуйте позже!")
     elif request.method == "GET":
         return render_template("/auth/register.html")
 
@@ -43,20 +44,22 @@ def login():
         db = get_db()
 
         if not username or not password:
-            return "Username AND password are required!"
+            return render_template("error.html", error="Username AND password are required!")
 
         user = db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
 
         if user is None:
-            return "User not found!"
+            return render_template("error.html", error="User not found!")
 
-        if user["password"] == password:
+        pwdhash = hashlib.sha256(password.encode("utf-8")).hexdigest()
+
+        if user["hash"] == pwdhash:
             session.clear()
             session["username"] = username
-            session["password"] = password
+            session["pwdhash"] = pwdhash
 
         else:
-            return "Passwords don`t match!"
+            return render_template("error.html", error="Passwords don`t match!")
 
         return redirect("/")
     else:
@@ -70,15 +73,15 @@ def logout():
 @auth_bp.before_app_request
 def load_user():
     username = session.get("username")
-    password = session.get("password")
+    pwdhash = session.get("pwdhash")
 
-    if username is None:
+    if username is None or pwdhash is None:
         g.user = None
     else:
         user = get_db().execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
         if not user:
             g.user = None
-        elif user["password"] == password:
+        elif user["hash"] == pwdhash:
             g.user = user
 
-# todo: хэшировать пароли нах.
+# todo: хэшировать пароли нах. СДЕЛАНО НАХ.

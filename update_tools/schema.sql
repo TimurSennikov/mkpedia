@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     commit_n NUMBER
 );
 
+DROP TABLE IF EXISTS queue;
 CREATE TABLE IF NOT EXISTS queue (
     username TEXT UNIQUE NOT NULL,
     hash TEXT NOT NULL

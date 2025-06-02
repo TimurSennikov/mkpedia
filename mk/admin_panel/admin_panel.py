@@ -1,3 +1,5 @@
+import hashlib
+
 from flask import *
 
 from ..db import *
@@ -18,14 +20,19 @@ def render_panel():
         if not newpwd:
             return render_template("not_found.html")
 
+        pwdhash = hashlib.sha256(newpwd.encode("utf-8")).hexdigest()
+
         db = get_db()
 
-        db.execute("UPDATE users SET password = ? WHERE username = 'root'", (newpwd,))
+        db.execute("UPDATE users SET hash = ? WHERE username = 'root'", (pwdhash,))
         db.commit()
 
         session.clear()
 
+        return redirect("/")
+
     db = get_db()
+
     queue = db.execute("SELECT * FROM queue").fetchall()
     return render_template("/admin/panel.html", queue=queue, is_root=g.user["username"]=="root")
 
@@ -37,7 +44,7 @@ def reject():
     username = request.args.get("username")
 
     if not username:
-        return "Пожалуйста, укажите username в query-параметрах, или, блять, используйте админ панель так, как это задумал админ, сука."
+        return render_template("error.html", error="Не указан username.")
 
     db.execute("DELETE FROM queue WHERE username = ?", (username,))
     db.commit()
@@ -52,13 +59,13 @@ def accept():
     username = request.args.get("username")
 
     if not username:
-        return "Сучара, эту страницу грузи только кнопками с админ-панели, если не знаешь, что делать, блять."
+        return render_template("error.html", error="Не указан username.")
 
     q = db.execute("SELECT * FROM queue WHERE username = ?", (username,)).fetchone()
-    password = q["password"]
+    pwdhash = q["hash"]
 
     db.execute("DELETE FROM queue WHERE username = ?", (username,))
-    db.execute("INSERT INTO users VALUES (?, ?, 0, ?, 0)", (username, password, ""))
+    db.execute("INSERT INTO users VALUES (?, ?, 0, ?, 0)", (username, pwdhash, ""))
 
     db.commit()
 
